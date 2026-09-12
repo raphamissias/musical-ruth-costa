@@ -38,7 +38,7 @@ const insertListItem = (service) => {
                     <div>${hymn.tom}</div>
                 </div>
             </div>
-            <iframe id="player" type="text/html" src="http://www.youtube.com/embed/${hymn.youtube}?enablejsapi=1&origin=http://example.com" frameborder="0"></iframe>
+            <iframe id="player" type="text/html" src="https://www.youtube.com/embed/${hymn.youtube}?enablejsapi=1&origin=http://example.com" frameborder="0"></iframe>
             <div class="chordLogo">Ícone Cifra</div> <!-- Link para acessar Cifra do hino -->
         </li>
         `,
