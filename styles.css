@@ -159,6 +159,11 @@ button:active {
   animation: spin 0.8s linear infinite;
 }
 
+a {
+  color: var(--text-color);
+  text-decoration: none;
+}
+
 @keyframes spin {
   to {
     transform: rotate(360deg);
@@ -186,5 +191,16 @@ button:active {
 
   .calendar {
     width: 100%;
+  }
+
+  .loading {
+    min-height: 180px;
+    padding: 30px 15px;
+  }
+
+  .spinner {
+    width: 35px;
+    height: 35px;
+    border-width: 4px;
   }
 }

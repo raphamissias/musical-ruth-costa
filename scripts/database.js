@@ -20,14 +20,14 @@ const readHymns = async () => {
     const { data, status } = JSON.parse(text);
 
     if (status !== 200) {
-      console.error(data?.message);
-      return [];
+      throw new Error(data?.message || `Status da API: ${status}`);
     }
 
     return data;
   } catch (error) {
     console.error("ERRO NA API:", error);
-    return [];
+
+    throw error;
   }
 };
 
@@ -64,5 +64,3 @@ export const separateByService = async () => {
 
   return servicesArr;
 };
-
-separateByService();

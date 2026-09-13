@@ -3,10 +3,41 @@ import { separateByService } from "./database.js";
 // Componentes interativos
 const servicesContainer = document.querySelector(".servicesContainer");
 
+const showLoading = () => {
+  servicesContainer.innerHTML = `
+    <div class="loading">
+      <div class="spinner"></div>
+      <span>Carregando...</span>
+    </div>
+  `;
+};
+
+const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+const separateByServiceWithRetry = async (attempts = 3) => {
+  for (let attempt = 1; attempt <= attempts; attempt++) {
+    try {
+      console.log(`Tentativa ${attempt}/${attempts}`);
+
+      return await separateByService();
+    } catch (error) {
+      console.error(`Tentativa ${attempt} falhou:`, error);
+
+      if (attempt === attempts) {
+        throw error;
+      }
+
+      await sleep(100 * attempt);
+    }
+  }
+};
+
 // Insere as listas conforme o Culto
 const insertList = async () => {
+  showLoading();
+
   try {
-    const services = await separateByService();
+    const services = await separateByServiceWithRetry();
 
     servicesContainer.innerHTML = "";
 
@@ -15,23 +46,27 @@ const insertList = async () => {
         "beforeend",
         `
           <ul class="serviceList">
-              <h3>${service.name}</h3>
-              ${insertListItem(service)}
+            <h3>${service.name}</h3>
+            ${insertListItem(service)}
           </ul>
         `,
       );
     });
   } catch (error) {
-    console.error("Erro ao carregar os dados:", error);
+    console.error("Falha definitiva:", error);
 
     servicesContainer.innerHTML = `
       <div class="loading">
-        <span>Não foi possível carregar os hinos.</span>
-        <button onclick="location.reload()">
+        <p>Não foi possível carregar os hinos.</p>
+        <button id="retryButton">
           Tentar novamente
         </button>
       </div>
     `;
+
+    document
+      .querySelector("#retryButton")
+      .addEventListener("click", insertList);
   }
 };
 
@@ -58,7 +93,10 @@ const insertListItem = (service) => {
               </div>
             </div>
             <div class="chordsWrapper">
-              <button id="btn${hymn.id}" class="expandChordsBtn" onClick="showChordsDisplay(${hymn.id}, 'btn${hymn.id}')">Expandir Cifra</button>
+                <div class="flex">
+                    <button id="btn${hymn.id}" class="expandChordsBtn" onClick="showChordsDisplay(${hymn.id}, 'btn${hymn.id}')">Expandir Cifra</button>
+                    <button class="expandChordsBtn")"><a href="${hymn.acordes}" target="_blank">Abrir em nova guia</a></button>
+                </div>
               <iframe id=${hymn.id} class="chords" src="${hymn.acordes}" frameborder="0"></iframe>
             </div>
         </li>
