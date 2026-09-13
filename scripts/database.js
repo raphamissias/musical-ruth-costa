@@ -3,21 +3,31 @@ const API_URL =
 
 const readHymns = async () => {
   try {
-    const response = await fetch(`${API_URL}path=hymns&action=read`, {
-      headers: {
-        "Content-Type": "text/plain;charset=utf-8",
-      },
-    });
+    const response = await fetch(`${API_URL}path=hymns&action=read`);
 
-    const { data, status } = await response.json();
+    const text = await response.text();
 
-    if (status != 200) {
-      console.log(data.message);
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}: ${text.slice(0, 200)}`);
+    }
+
+    const contentType = response.headers.get("content-type");
+
+    if (!contentType?.includes("application/json")) {
+      throw new Error(`A API não retornou JSON. Content-Type: ${contentType}`);
+    }
+
+    const { data, status } = JSON.parse(text);
+
+    if (status !== 200) {
+      console.error(data?.message);
+      return [];
     }
 
     return data;
-  } catch (e) {
-    console.log(e);
+  } catch (error) {
+    console.error("ERRO NA API:", error);
+    return [];
   }
 };
 
@@ -26,30 +36,29 @@ export const separateByService = async () => {
   const hymns = await readHymns();
   const servicesArr = [];
 
-  await hymns.forEach((hymn, index) => {
-    const { nome_culto, departamento, hino, tom, youtube, cifra } = hymn;
+  hymns.forEach((hymn) => {
+    const { id, nome_culto, departamento, hino, tom, youtube, acordes } = hymn;
 
     // Procura se o culto já existe
     const service = servicesArr.find((item) => item.name === nome_culto);
 
     // Dados do hino
     const hymnData = {
+      id,
       departamento,
       hino,
       tom,
       youtube,
-      cifra,
+      acordes,
     };
 
     if (!service) {
-      // Dá início à nova lista de culto
       servicesArr.push({
         name: nome_culto,
         hymns: [hymnData],
       });
     } else {
-      // Adiciona hino na lista de culto já criada
-      servicesArr[0].hymns.push(hymnData);
+      service.hymns.push(hymnData);
     }
   });
 

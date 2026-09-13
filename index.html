@@ -14,25 +14,39 @@
             <span>Cronograma | Ruth Costa</div>
         </div>
       <nav>
-        <div>Cronograma</div>
-        <div>Hinos</div>
+        <img src="./img/menu.png" alt="menu">
       </nav>
 
     </header>
     <main>
+      <section>
+      </section>
       <section class="servicesContainer">
+          <div class="loading">
+            <div class="spinner"></div>
+            <span>Carregando...</span>
+          </div>
         <!-- <ul class="serviceList">
+          <h2>Teste</h2>
           <li>
-            <div class="column">
-                <div class="title">Entrada</div>   
-                <div>Me Ama</div>
-                <div class="tone">
+            <div class="hymnWrapper">
+              <iframe id="player" type="text/html" src="http://www.youtube.com/embed/tWogtory8Uk?enablejsapi=1&origin=http://example.com" frameborder="0"></iframe>
+              <div class="hymnDesc">
+                <div class="infoWrapper">
+                  <div class="title">Entrada</div>   
+                  <div>Me Ama</div>
+                </div>
+                <div class="toneWrapper">
                     <div class="title">Tom</div>
                     <div>A</div>
                 </div>
+              </div>
             </div>
-            <iframe id="player" type="text/html" src="http://www.youtube.com/embed/tWogtory8Uk?enablejsapi=1&origin=http://example.com" frameborder="0"></iframe>
-            <div class="chordLogo">Ícone Cifra</div>
+            
+            <div class="chordsWrapper">
+              <button class="expandChordsBtn">Expandir Cifra</button>
+              <iframe class="chords" src="https://docs.google.com/document/d/1MBIe_dHwQrTVHIRsAPgoJUVLOYDXOfDXcvB-W8kvcMo/edit?usp=drivesdk" frameborder="0"></iframe>
+            </div>
           </li>
         </ul> -->
       </section>
@@ -46,4 +60,5 @@
     </main>
   </body>
   <script type="module" src="./scripts/main.js"></script>
+  <script src="./scripts/chordsDisplay.js"></script>
 </html>
