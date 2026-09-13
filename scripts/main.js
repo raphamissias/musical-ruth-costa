@@ -80,7 +80,7 @@ const insertListItem = (service) => {
         `
         <li>
             <div class="hymnWrapper">
-                <iframe id="player" type="text/html" src="https://www.youtube.com/embed/${hymn.youtube}" frameborder="0"></iframe>
+                <iframe id="player" type="text/html" data-src="https://www.youtube.com/embed/${hymn.youtube}" loading="lazy" frameborder="0"></iframe>
               <div class="hymnDesc">
                 <div class="infoWrapper">
                   <div class="title">${hymn.departamento}</div>   
@@ -97,7 +97,7 @@ const insertListItem = (service) => {
                     <button id="btn${hymn.id}" class="expandChordsBtn" onClick="showChordsDisplay(${hymn.id}, 'btn${hymn.id}')">Expandir Cifra</button>
                     <button class="expandChordsBtn")"><a href="${hymn.acordes}" target="_blank">Abrir em nova guia</a></button>
                 </div>
-              <iframe id=${hymn.id} class="chords" src="${hymn.acordes}" frameborder="0"></iframe>
+              <iframe id=${hymn.id} class="chords" data-src="${hymn.acordes}" loading="lazy" frameborder="0"></iframe>
             </div>
         </li>
         `,
